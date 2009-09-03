@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.hamnaberg.appframework</groupId>
+  <groupId>net.hamnaberg.appframework</groupId>
   <artifactId>swing-appframework</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -13,13 +13,6 @@
       <groupId>org.swinglabs</groupId>
       <artifactId>swing-worker</artifactId>
       <version>1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.jnlp</groupId>
-      <artifactId>jnlp</artifactId>
-      <version>1.5</version>
-      <scope>system</scope>
-      <systemPath>${java.home}/lib/javaws.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -55,4 +48,38 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>OSX</id>
+      <activation>
+        <os>
+          <family>osx</family>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.jnlp</groupId>
+          <artifactId>jnlp</artifactId>
+          <version>1.6</version>
+          <scope>system</scope>
+          <systemPath>/Applications/Utilities/Java/Java\ Web\ Start.app/Contents/MacOS/javaws.jar</systemPath>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>WindowsUnix</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.jnlp</groupId>
+          <artifactId>jnlp</artifactId>
+          <version>1.6</version>
+          <scope>system</scope>
+          <systemPath>${java.home}/lib/javaws.jar</systemPath>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

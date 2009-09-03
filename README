@@ -1,6 +1,4 @@
-
-NetBeans project for the JSR 296 Application Framework API
-implementation prototype.
+Forked by Erlend Hamnaberg 3rd sept. 2009.
 
 This code comes from the AppFramework java.net project:
 https://appframework.dev.java.net/ Go there for documentation, news,
@@ -9,10 +7,6 @@ about the API, please subscribe to the AppFramework users mailing list
 and send your feedback there:
 https://appframework.dev.java.net/servlets/ProjectMailingListList (The
 users email alias is the last one, all the way at the bottom.)
-
-The code is organized as a NetBeans project and it's been built for
-JDK 1.5, so you should be able to try things out without additional
-fuss.  A few points of interest in the hiearchy:
 
 COPYING - announces that the code is LGPL
 src/application - the framework itself
@@ -25,26 +19,11 @@ test/application - JUnit tests; very spotty coverage
 
 * Building the Source Code
 
-The NetBeans project should build correctly on Windows and OSX.  
+for unix/windows:
+mvn clean install
 
-In addition to the 1.5 JDK, the build depends on the 1.5 backport of
-SwingWorker which was downloaded from
-https://swingworker.dev.java.net/ and has been copied into the CVS,
-lib/swing-worker.jar, as a binary file.  The build also depends on
-javaws.jar, the JNLP API, at compile time.  This file is distributed
-with the JDK, it's ${java.home}/lib/javaws.jar on Windows and on OSX
-it's:
-/Applications/Utilities/Java/Java\ Web\ Start.app/Contents/MacOS/javaws.jar 
+for OSX:
+mvn clean install -P !WindowsUnix
 
-The javaws.jar file isn't needed at run-time and is included 
-automatically by the Java Web Start launcher.  The pathname for javaws.jar
-is specified in nbproject/project.properties, see jnlp.classpath and
-osx.jnlp.classpath.  If you're using another IDE, you may need to 
-add javaws.jar to the compile-time classpath manually.
-
-
-
-
-
-
-
+Note that the tests are disabled for now in Maven. They will be enabled at a later stage, when I have figured
+out why they don't run.
