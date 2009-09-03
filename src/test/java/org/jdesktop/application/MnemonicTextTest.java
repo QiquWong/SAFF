@@ -20,10 +20,6 @@ import java.awt.event.KeyEvent;
 
 public class MnemonicTextTest extends TestCase {
 
-    public MnemonicTextTest(String testName) {
-        super(testName);
-    }
-
     /* This javax.swing.Action constants is only 
      * defined in Mustang (1.6), see 
      * http://download.java.net/jdk6/docs/api/javax/swing/Action.html

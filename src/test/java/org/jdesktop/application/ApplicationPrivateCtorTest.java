@@ -29,8 +29,8 @@ public class ApplicationPrivateCtorTest extends TestCase {
 
     private static boolean isAppLaunched = false;
 
-    public ApplicationPrivateCtorTest(String testName) {
-        super(testName);
+    @Override
+    protected void setUp() throws Exception {
         if (!isAppLaunched) {
             PrivateApplication.launchAndWait(PrivateApplication.class);
             isAppLaunched = true;

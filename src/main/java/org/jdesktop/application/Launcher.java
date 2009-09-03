@@ -2,6 +2,7 @@ package org.jdesktop.application;
 
 import javax.swing.*;
 import java.util.ServiceLoader;
+import java.lang.reflect.Constructor;
 
 public class Launcher {
     private static Launcher INSTANCE;
@@ -25,7 +26,14 @@ public class Launcher {
                        final String[] args) {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
-                Application app = appClass.newInstance();
+                Constructor<? extends Application> ctor = appClass.getDeclaredConstructor();
+                if (!ctor.isAccessible()) {
+                    try {
+                        ctor.setAccessible(true);
+                    } catch (SecurityException ignore) {
+                    }
+                }
+                Application app = ctor.newInstance();
                 app.launch(args);
             } else {
                 SwingUtilities.invokeAndWait(new Runnable() {

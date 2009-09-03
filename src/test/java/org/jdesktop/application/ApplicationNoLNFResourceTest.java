@@ -24,8 +24,8 @@ public class ApplicationNoLNFResourceTest extends TestCase {
 
     private static boolean isAppLaunched = false;
 
-    public ApplicationNoLNFResourceTest(String testName) {
-        super(testName);
+    @Override
+    protected void setUp() throws Exception {
         if (!isAppLaunched) {
             ApplicationNoLNF.launchAndWait(ApplicationNoLNF.class);
             isAppLaunched = true;
@@ -35,5 +35,12 @@ public class ApplicationNoLNFResourceTest extends TestCase {
     public void testApplicationLookAndFeelResource() {
         LookAndFeel lnf = UIManager.getLookAndFeel();
         assertTrue("Look and Feel should be native", lnf.isNativeLookAndFeel());
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        if (isAppLaunched) {
+
+        }
     }
 }

@@ -5,11 +5,7 @@
 
 package org.jdesktop.application;
 
-import java.awt.ActiveEvent;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.PaintEvent;
 import java.beans.Beans;
@@ -20,9 +16,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
 
@@ -119,10 +113,9 @@ import javax.swing.event.EventListenerList;
  */
 
 @ProxyActions({"cut", "copy", "paste", "delete"})
-
 public abstract class Application extends AbstractBean {
     private static final Logger logger = Logger.getLogger(Application.class.getName());
-    private static final SwingStaticProperty<Application> applicationProperty = 
+    private static final SwingStaticProperty<Application> applicationProperty =
             new SwingStaticProperty<Application>();
     private final EventListenerList exitListeners;
     private final ApplicationContext context;
@@ -142,15 +135,38 @@ public abstract class Application extends AbstractBean {
     }
 
     /**
-     * Launches the application, the default implementation 
-     * calls {@link #initialize(String[])} method followed by {@link #startup()}
-     * 
+     * Launches the application, we call the {@link #initialize(String[])} method followed by {@link #startup()}.
+     * When startup is complete, and there are no events on the event queue, we call ready().
+     *
      * @param args {@code main} method arguments
      */
-    public void launch(String[] args) {
-        applicationProperty.set(this);
+    public final void launch(final String[] args) {
         initialize(args);
+        if (SwingUtilities.isEventDispatchThread()) {
+            launchOnEDT();
+        }
+        else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
+                        launch(args);
+                    }
+                });
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void launchOnEDT() {
+        applicationProperty.set(this);
         startup();
+        waitForReady();
+    }
+
+    private void waitForReady() {
+        new DoWaitForEmptyEventQ().execute();
     }
 
     /* Defines the default value for the platform resource, 
@@ -172,8 +188,9 @@ public abstract class Application extends AbstractBean {
     /**
      * Responsible for initializations that must occur before the
      * GUI is constructed by {@code startup}.
+     * This method is not run on the Event Dispatching thread, and must therefore adhere to thread safety policies.
      * <p/>
-     * Subclasses that want to do any initialization work before {@code startup} 
+     * Subclasses that want to do any initialization work before {@code startup}
      * must override it.  The {@code initialize} method
      * runs on the event dispatching thread.
      * <p/>
@@ -188,10 +205,10 @@ public abstract class Application extends AbstractBean {
         ApplicationContext ctx = getContext();
         ctx.setApplicationClass(getClass());
         ctx.setApplication(this);
-        
+
         ResourceMap appResourceMap = ctx.getResourceMap();
         appResourceMap.putResource("platform", platform());
-        
+
         String key = "Application.lookAndFeel";
         String lnfResource = appResourceMap.getString(key);
         String lnf = (lnfResource == null) ? "system" : lnfResource;
@@ -199,7 +216,8 @@ public abstract class Application extends AbstractBean {
             if (lnf.equalsIgnoreCase("system")) {
                 String name = UIManager.getSystemLookAndFeelClassName();
                 UIManager.setLookAndFeel(name);
-            } else if (!lnf.equalsIgnoreCase("default")) {
+            }
+            else if (!lnf.equalsIgnoreCase("default")) {
                 UIManager.setLookAndFeel(lnf);
             }
         }
@@ -208,7 +226,7 @@ public abstract class Application extends AbstractBean {
             logger.log(Level.WARNING, s, e);
         }
     }
-        
+
     /**
      * Responsible for starting the application; for creating and showing
      * the initial GUI.
@@ -349,7 +367,7 @@ public abstract class Application extends AbstractBean {
      * prompt the user with a modal dialog.
      * <p/>
      * The {@code eventObject} argument will be the the value passed
-     * to {@link #exit(EventObject) exit()}.  It may be null.
+     * to {@link Application#exit(EventObject) exit()}.  It may be null.
      * <p/>
      * The {@code willExit} method is called after the exit has
      * been confirmed.  An ExitListener that's going to perform
@@ -357,10 +375,9 @@ public abstract class Application extends AbstractBean {
      * <p/>
      * {@code ExitListeners} run on the event dispatching thread.
      *
-     * @param event the EventObject that triggered this call or null
-     * @see #exit(EventObject)
-     * @see #addExitListener
-     * @see #removeExitListener
+     * @see Application#exit(EventObject)
+     * @see Application#addExitListener
+     * @see Application#removeExitListener
      */
     public interface ExitListener extends EventListener {
         boolean canExit(EventObject event);
@@ -477,4 +494,81 @@ public abstract class Application extends AbstractBean {
     public void hide(View view) {
         view.getRootPane().getParent().setVisible(false);
     }
+
+    /* An event that sets a flag when it's dispatched and another
+     * flag, see isEventQEmpty(), that indicates if the event queue
+     * was empty at dispatch time.
+     */
+    private static class NotifyingEvent extends PaintEvent implements ActiveEvent {
+        private boolean dispatched = false;
+        private boolean qEmpty = false;
+
+        NotifyingEvent(Component c) {
+            super(c, PaintEvent.UPDATE, null);
+        }
+
+        synchronized boolean isDispatched() {
+            return dispatched;
+        }
+
+        synchronized boolean isEventQEmpty() {
+            return qEmpty;
+        }
+
+        public void dispatch() {
+            EventQueue q = Toolkit.getDefaultToolkit().getSystemEventQueue();
+            synchronized (this) {
+                qEmpty = (q.peekEvent() == null);
+                dispatched = true;
+                notifyAll();
+            }
+        }
+    }
+
+
+    /* When the event queue is empty, give the app a chance to do
+    * something, now that the GUI is "ready".
+    */
+    private class DoWaitForEmptyEventQ extends Task<Void, Void> {
+        final JComponent placeHolder = new JComponent() {};
+        
+        DoWaitForEmptyEventQ() {
+            super(Application.this);
+        }
+
+        /* Keep queuing up NotifyingEvents until the event queue is
+        * empty when the NotifyingEvent is dispatched().
+        */
+        private void waitForEmptyEventQ() {
+            boolean qEmpty = false;
+
+            EventQueue q = Toolkit.getDefaultToolkit().getSystemEventQueue();
+            while (!qEmpty) {
+                NotifyingEvent e = new NotifyingEvent(placeHolder);
+                q.postEvent(e);
+                synchronized (e) {
+                    while (!e.isDispatched()) {
+                        try {
+                            e.wait();
+                        }
+                        catch (InterruptedException ie) {
+                        }
+                    }
+                    qEmpty = e.isEventQEmpty();
+                }
+            }
+        }
+
+        @Override
+        protected Void doInBackground() {
+            waitForEmptyEventQ();
+            return null;
+        }
+
+        @Override
+        protected void finished() {
+            ready();
+        }
+    }
+
 }

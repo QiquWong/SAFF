@@ -5,6 +5,8 @@
 
 package org.jdesktop.application;
 
+import javax.swing.*;
+
 /**
  * Identical to WaitForStartupApplication.
  * <p/>
@@ -12,17 +14,13 @@ package org.jdesktop.application;
  * waiting until its startup method has finished running on the EDT.
  */
 public class WaitForStartupSFA extends SingleFrameApplication {
-    private static final Object lock = new Object(); // static: Application is a singleton
     private boolean started = false;
 
     /**
      * Unblock the launchAndWait() method.
      */
     protected void startup() {
-        synchronized (lock) {
-            started = true;
-            lock.notifyAll();
-        }
+        started = true;
     }
 
     boolean isStarted() {
@@ -34,23 +32,14 @@ public class WaitForStartupSFA extends SingleFrameApplication {
      * (wait) until it's startup() method has run.
      */
     public static void launchAndWait(Class<? extends WaitForStartupSFA> applicationClass) {
-        synchronized (lock) {
-            Launcher.getInstance().launch(applicationClass, new String[]{});
-            while (true) {
-                try {
-                    lock.wait();
+        Launcher.getInstance().launch(applicationClass, new String[]{});
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
                 }
-                catch (InterruptedException e) {
-                    System.err.println("launchAndWait interrupted!");
-                    break;
-                }
-                Application app = Application.getInstance(WaitForStartupSFA.class);
-                if (app instanceof WaitForStartupSFA) {
-                    if (((WaitForStartupSFA) app).isStarted()) {
-                        break;
-                    }
-                }
-            }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -6,6 +6,7 @@
 package org.jdesktop.application;
 
 import org.jdesktop.application.data.FileSystemStorage;
+import org.codehaus.plexus.PlexusTestCase;
 
 import junit.framework.TestCase;
 
@@ -32,15 +33,12 @@ public class LocalStorageTest extends TestCase {
 
     public LocalStorageTest(String testName) {
         super(testName);
-        String dirString = System.getProperty("LocalStorage.dir");
-        if (dirString == null) {
-            throw new Error("System property \"LocalStorage.dir\" not defined");
-        }
+        String dirString = PlexusTestCase.getTestPath("target/test/storage");
         File dir = new File(dirString);
         if (!dir.exists()) {
             String msg = "Creating LocalStorage tmp directory \"" + dir + "\"";
             System.out.println(msg);
-            if (!dir.mkdir()) {
+            if (!dir.mkdirs()) {
                 throw new Error(msg + " -failed-");
             }
         } else {

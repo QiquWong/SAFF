@@ -41,8 +41,8 @@ public class ProxyActionTest extends TestCase {
         return Application.getInstance(SimpleApplication.class).getContext();
     }
 
-    public ProxyActionTest(String testName) {
-        super(testName);
+    @Override
+    protected void setUp() throws Exception {
         if (!isAppLaunched) {
             SimpleApplication.launchAndWait(SimpleApplication.class);
             isAppLaunched = true;

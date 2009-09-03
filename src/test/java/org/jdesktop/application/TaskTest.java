@@ -23,14 +23,14 @@ public class TaskTest extends TestCase {
         public boolean startupOnEDT;
     }
 
-    public TaskTest(String testName) {
-        super(testName);
+    @Override
+    protected void setUp() throws Exception {
         if (!isAppLaunched) {
             SimpleApplication.launchAndWait(SimpleApplication.class);
             isAppLaunched = true;
         }
     }
-
+    
     public static class DoNothingTask extends Task<Void, Void> {
         DoNothingTask() {
             super(Application.getInstance(SimpleApplication.class), "DoNothingTask");
