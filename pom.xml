@@ -25,6 +25,13 @@
       <version>1.0-beta-3.0.6</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.jnlp</groupId>
+      <artifactId>jnlp</artifactId>
+      <version>1.6</version>
+      <scope>system</scope>
+      <systemPath>${java.home}/lib/javaws.jar</systemPath>
+    </dependency>
   </dependencies>
 
   <build>
@@ -48,38 +55,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>OSX</id>
-      <activation>
-        <os>
-          <family>osx</family>
-        </os>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>javax.jnlp</groupId>
-          <artifactId>jnlp</artifactId>
-          <version>1.6</version>
-          <scope>system</scope>
-          <systemPath>/Applications/Utilities/Java/Java\ Web\ Start.app/Contents/MacOS/javaws.jar</systemPath>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>WindowsUnix</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>javax.jnlp</groupId>
-          <artifactId>jnlp</artifactId>
-          <version>1.6</version>
-          <scope>system</scope>
-          <systemPath>${java.home}/lib/javaws.jar</systemPath>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
