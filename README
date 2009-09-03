@@ -19,11 +19,8 @@ test/application - JUnit tests; very spotty coverage
 
 * Building the Source Code
 
-for unix/windows:
 mvn clean install
 
-for OSX:
-mvn clean install -P !WindowsUnix
 
 Note that the tests are disabled for now in Maven. They will be enabled at a later stage, when I have figured
 out why they don't run.
