@@ -8,12 +8,8 @@ package org.jdesktop.application;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.PaintEvent;
-import java.beans.Beans;
-import java.lang.reflect.Constructor;
 import java.util.EventListener;
 import java.util.EventObject;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -107,17 +103,18 @@ import javax.swing.event.EventListenerList;
  * </ul>
  *
  * @author Hans Muller (Hans.Muller@Sun.COM)
+ * @author <a href="mailto:erlend@hamnaberg.net">Erlend Hamnaberg</a>
  * @see SingleFrameApplication
  * @see ApplicationContext
  * @see UIManager#setLookAndFeel
  */
 
 @ProxyActions({"cut", "copy", "paste", "delete"})
-public abstract class Application extends AbstractBean {
+public abstract class Application {
     private static final Logger logger = Logger.getLogger(Application.class.getName());
     private static final SwingStaticProperty<Application> applicationProperty =
             new SwingStaticProperty<Application>();
-    private final EventListenerList exitListeners;
+    private final EventListenerList exitListeners = new EventListenerList();
     private final ApplicationContext context;
 
     /**
@@ -130,8 +127,11 @@ public abstract class Application extends AbstractBean {
      * method.
      */
     protected Application() {
-        exitListeners = new EventListenerList();
-        context = new ApplicationContext();
+        this(new ApplicationContext());
+    }
+
+    protected Application(ApplicationContext context) {
+        this.context = context;
     }
 
     /**
