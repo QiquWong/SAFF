@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Task;
 import org.jdesktop.application.Launcher;
@@ -79,7 +79,7 @@ import java.util.List;
  * to format a {@link Task#message message} each time a new directory is listed.
  *
  * @author Hans Muller (Hans.Muller@Sun.COM)
- * @see Action
+ * @see org.jdesktop.application.ProxyAction
  * @see Task
  */
 
@@ -123,7 +123,7 @@ public class ActionExample4 extends Application {
      * @return the new background Task
      * @see #stop
      */
-    @Action
+    @ProxyAction
     public Task go() {
         stop();
         File root = new File(rootTextField.getText());
@@ -140,7 +140,7 @@ public class ActionExample4 extends Application {
      *
      * @see #go
      */
-    @Action(enabledProperty = "stopEnabled")
+    @ProxyAction(enabledProperty = "stopEnabled")
     public void stop() {
         if ((doListFiles != null) && !doListFiles.isCancelled()) {
             if (doListFiles.cancel(true)) {
@@ -158,7 +158,7 @@ public class ActionExample4 extends Application {
     public void setStopEnabled(boolean stopEnabled) {
         boolean oldValue = this.stopEnabled;
         this.stopEnabled = stopEnabled;
-        firePropertyChange("stopEnabled", oldValue, this.stopEnabled);
+        //firePropertyChange("stopEnabled", oldValue, this.stopEnabled);
     }
 
 

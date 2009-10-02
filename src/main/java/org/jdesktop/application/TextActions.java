@@ -166,7 +166,7 @@ class TextActions extends AbstractBean {
         actionMap.get(actionName).actionPerformed(actionEvent);
     }
 
-    @Action(enabledProperty = "cutEnabled")
+    @ProxyAction(enabledProperty = "cutEnabled")
     public void cut(ActionEvent e) {
         Object src = e.getSource();
         if (src instanceof JTextComponent) {
@@ -184,7 +184,7 @@ class TextActions extends AbstractBean {
         firePropertyChange("cutEnabled", oldValue, this.cutEnabled);
     }
 
-    @Action(enabledProperty = "copyEnabled")
+    @ProxyAction(enabledProperty = "copyEnabled")
     public void copy(ActionEvent e) {
         Object src = e.getSource();
         if (src instanceof JTextComponent) {
@@ -202,7 +202,7 @@ class TextActions extends AbstractBean {
         firePropertyChange("copyEnabled", oldValue, this.copyEnabled);
     }
 
-    @Action(enabledProperty = "pasteEnabled")
+    @ProxyAction(enabledProperty = "pasteEnabled")
     public void paste(ActionEvent e) {
         Object src = e.getSource();
         if (src instanceof JTextComponent) {
@@ -220,7 +220,7 @@ class TextActions extends AbstractBean {
         firePropertyChange("pasteEnabled", oldValue, this.pasteEnabled);
     }
 
-    @Action(enabledProperty = "deleteEnabled")
+    @ProxyAction(enabledProperty = "deleteEnabled")
     public void delete(ActionEvent e) {
         Object src = e.getSource();
         if (src instanceof JTextComponent) {

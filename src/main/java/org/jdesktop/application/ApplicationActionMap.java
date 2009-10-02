@@ -132,7 +132,7 @@ public class ApplicationActionMap extends ActionMap {
         Class<?> actionsClass = getActionsClass();
         // @Action 
         for (Method m : actionsClass.getDeclaredMethods()) {
-            Action action = m.getAnnotation(Action.class);
+            ProxyAction action = m.getAnnotation(ProxyAction.class);
             if (action != null) {
                 String methodName = m.getName();
                 String enabledProperty = aString(action.enabledProperty(), null);

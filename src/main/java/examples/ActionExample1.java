@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Launcher;
 
@@ -53,12 +53,12 @@ public class ActionExample1 extends Application {
     private JFrame appFrame = null;
     private JTextField textField = null;
 
-    @Action
+    @ProxyAction
     public void setTitle() {
         appFrame.setTitle(textField.getText());
     }
 
-    @Action
+    @ProxyAction
     public void clearTitle() {
         appFrame.setTitle("");
     }

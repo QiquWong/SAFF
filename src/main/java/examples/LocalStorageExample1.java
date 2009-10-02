@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Launcher;
 
@@ -47,21 +47,21 @@ public class LocalStorageExample1 extends Application {
     private final JTextField field = new JTextField("Value", 2<<4); // NON-NLS: default value
     private final ListModel model = new ListModel();
 
-    @Action
+    @ProxyAction
     public void addValue() {
         int index = model.list.size();
         model.list.add(field.getText().trim());
         model.fireContentsChanged(index, index);
     }
 
-    @Action
+    @ProxyAction
     public void addRandomValue() {
         int index = model.list.size();
         model.list.add(Double.toString(Math.random()));
         model.fireContentsChanged(index, index);
     }
 
-    @Action
+    @ProxyAction
     public void save() {
         try {
             OutputStreamWriter writer = new OutputStreamWriter(
@@ -81,7 +81,7 @@ public class LocalStorageExample1 extends Application {
         }
     }
 
-    @Action
+    @ProxyAction
     public void load() {
         int lower = model.list.size();
         try {
@@ -107,7 +107,7 @@ public class LocalStorageExample1 extends Application {
         }
     }
 
-    @Action
+    @ProxyAction
     public void clear() {
         int index = model.list.size();
         if (index > 0) {

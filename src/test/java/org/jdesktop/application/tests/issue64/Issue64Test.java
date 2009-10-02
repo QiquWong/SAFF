@@ -4,10 +4,7 @@
 */
 package org.jdesktop.application.tests.issue64;
 
-import org.jdesktop.application.Application;
-import org.jdesktop.application.SingleFrameApplication;
-import org.jdesktop.application.Task;
-import org.jdesktop.application.Launcher;
+import org.jdesktop.application.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +73,7 @@ public class Issue64Test extends SingleFrameApplication {
         return result;
     }
 
-    @org.jdesktop.application.Action(
+    @ProxyAction(
         block = Task.BlockingScope.ACTION,
         enabledProperty = "blockActionEnabled"
     )

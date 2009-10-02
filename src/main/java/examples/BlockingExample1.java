@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.*;
 import org.jdesktop.application.Task.BlockingScope;
 import org.jdesktop.application.Task.InputBlocker;
@@ -67,7 +67,7 @@ import java.util.logging.Logger;
  * @author Hans Muller (Hans.Muller@Sun.COM)
  * @see ApplicationContext
  * @see Application
- * @see Action
+ * @see org.jdesktop.application.ProxyAction
  * @see Task
  * @see TaskMonitor
  * @see StatusBar
@@ -190,22 +190,22 @@ public class BlockingExample1 extends SingleFrameApplication {
 
     }
 
-    @Action(block = BlockingScope.ACTION)
+    @ProxyAction(block = BlockingScope.ACTION)
     public Task blockAction() {
         return new DoNothingTask();
     }
 
-    @Action(block = BlockingScope.COMPONENT)
+    @ProxyAction(block = BlockingScope.COMPONENT)
     public Task blockComponent() {
         return new DoNothingTask();
     }
 
-    @Action(block = BlockingScope.WINDOW)
+    @ProxyAction(block = BlockingScope.WINDOW)
     public Task blockWindow() {
         return new DoNothingTask();
     }
 
-    @Action(block = BlockingScope.APPLICATION)
+    @ProxyAction(block = BlockingScope.APPLICATION)
     public Task blockApplication() {
         Task task = new DoNothingTask();
         task.setInputBlocker(new BusyIndicatorInputBlocker(task));

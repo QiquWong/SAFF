@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
 /**
  * The {@link javax.swing.Action} class used to implement the
@@ -238,7 +236,7 @@ public class ApplicationAction extends AbstractAction {
         }
 
         if (resourceMap != null) {
-            initActionProperties(resourceMap, baseName);
+            ActionConfigurationUtil.configureAction(this, baseName, resourceMap);
         }
     }
 
@@ -408,6 +406,7 @@ public class ApplicationAction extends AbstractAction {
     /* Init all of the javax.swing.Action properties for the @Action
      * named actionName.  
      */
+/*
     private void initActionProperties(ResourceMap resourceMap, String baseName) {
         boolean iconOrNameSpecified = false;  // true if Action's icon/name properties set
 
@@ -466,6 +465,7 @@ public class ApplicationAction extends AbstractAction {
             putValue(javax.swing.Action.NAME, actionName);
         }
     }
+*/
 
     private String propertyMethodName(String prefix, String propertyName) {
         return prefix + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
@@ -624,8 +624,8 @@ public class ApplicationAction extends AbstractAction {
         for (int i = 0; i < pTypes.length; i++) {
             String pKey = null;
             for (Annotation pAnnotation : allPAnnotations[i]) {
-                if (pAnnotation instanceof Action.Parameter) {
-                    pKey = ((Action.Parameter) pAnnotation).value();
+                if (pAnnotation instanceof ProxyAction.Parameter) {
+                    pKey = ((ProxyAction.Parameter) pAnnotation).value();
                     break;
                 }
             }

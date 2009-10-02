@@ -423,7 +423,7 @@ public abstract class Application {
      * @param e the triggering event
      * @see #exit(EventObject)
      */
-    @Action
+    @ProxyAction
     public void quit(ActionEvent e) {
         exit(e);
     }

@@ -37,7 +37,7 @@ public class ApplicationTest extends TestCase {
             startupOnEDT = SwingUtilities.isEventDispatchThread();
         }
 
-        @Action()
+        @ProxyAction()
         public void simpleAppAction() {
         }
     }
@@ -115,7 +115,7 @@ public class ApplicationTest extends TestCase {
     }
 
     public static class SimpleController {
-        @Action()
+        @ProxyAction()
         public void simpleControllerAction() {
         }
     }
@@ -210,12 +210,12 @@ public class ApplicationTest extends TestCase {
     public static class StatefulController {
         private int n = 0;
 
-        @Action()
+        @ProxyAction()
         public void one() {
             n = 1;
         }
 
-        @Action()
+        @ProxyAction()
         public void two() {
             n = 2;
         }
@@ -269,7 +269,7 @@ public class ApplicationTest extends TestCase {
             this.n = n;
         }
 
-        @Action()
+        @ProxyAction()
         public void anAction() {
             n = -1;
         }

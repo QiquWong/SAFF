@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.Launcher;
 
@@ -48,7 +48,7 @@ public class SingleFrameExample6 extends SingleFrameApplication {
         return window;
     }
 
-    @Action
+    @ProxyAction
     public void hideWindow(ActionEvent e) {
         if (e.getSource() instanceof Component) {
             Component source = (Component) e.getSource();
@@ -59,22 +59,22 @@ public class SingleFrameExample6 extends SingleFrameApplication {
         }
     }
 
-    @Action
+    @ProxyAction
     public void showWindow0() {
         show((JFrame) getWindow(0, JFrame.class));
     }
 
-    @Action
+    @ProxyAction
     public void showWindow1() {
         show((JDialog) getWindow(1, JDialog.class));
     }
 
-    @Action
+    @ProxyAction
     public void showWindow2() {
         show((JDialog) getWindow(2, JDialog.class));
     }
 
-    @Action
+    @ProxyAction
     public void disposeSecondaryWindows() {
         for (int i = 0; i < windows.size(); i++) {
             Window window = windows.get(i);

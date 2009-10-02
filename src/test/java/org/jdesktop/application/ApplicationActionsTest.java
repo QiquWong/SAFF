@@ -23,7 +23,7 @@ public class ApplicationActionsTest extends TestCase {
     public static class DefaultActionsApplication extends WaitForStartupApplication {
         boolean deleteCalled = false;
 
-        @Action
+        @ProxyAction
         public void delete() {
             deleteCalled = true;
         }

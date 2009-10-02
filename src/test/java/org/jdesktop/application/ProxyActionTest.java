@@ -32,7 +32,7 @@ public class ProxyActionTest extends TestCase {
             startupOnEDT = SwingUtilities.isEventDispatchThread();
         }
 
-        @Action()
+        @ProxyAction()
         public void simpleAppAction() {
         }
     }
@@ -57,7 +57,7 @@ public class ProxyActionTest extends TestCase {
         private boolean actionEnabled = true;
         int testActionCounter = 0;
 
-        @Action(enabledProperty = "testActionEnabled")
+        @ProxyAction(enabledProperty = "testActionEnabled")
         public void testAction() {
             testActionCounter += 1;
         }

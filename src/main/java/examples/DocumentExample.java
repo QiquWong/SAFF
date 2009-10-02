@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.*;
 
 import javax.swing.*;
@@ -79,7 +79,7 @@ import java.util.logging.Logger;
  * @author Hans Muller (Hans.Muller@Sun.COM)
  * @see SingleFrameApplication
  * @see ResourceMap
- * @see Action
+ * @see org.jdesktop.application.ProxyAction
  * @see Task
  */
 public class DocumentExample extends SingleFrameApplication {
@@ -203,7 +203,7 @@ public class DocumentExample extends SingleFrameApplication {
      *
      * @return a new LoadFileTask or null
      */
-    @Action
+    @ProxyAction
     public Task open() {
         JFileChooser fc = createFileChooser("openFileChooser");
         int option = fc.showOpenDialog(getMainFrame());
@@ -251,7 +251,7 @@ public class DocumentExample extends SingleFrameApplication {
      *
      * @see #getFile
      */
-    @Action(enabledProperty = "modified")
+    @ProxyAction(enabledProperty = "modified")
     public Task save() {
         return new SaveFileTask(getFile());
     }
@@ -265,7 +265,7 @@ public class DocumentExample extends SingleFrameApplication {
      * value of the {@code file} property if the file is saved
      * successfully.
      */
-    @Action
+    @ProxyAction
     public Task saveAs() {
         JFileChooser fc = createFileChooser("saveAsFileChooser");
         appResourceMap.injectComponents(fc);
@@ -280,7 +280,7 @@ public class DocumentExample extends SingleFrameApplication {
     /**
      * Show the about box dialog.
      */
-    @Action
+    @ProxyAction
     public void showAboutBox() {
         if (aboutBox == null) {
             aboutBox = createAboutBox();
@@ -291,7 +291,7 @@ public class DocumentExample extends SingleFrameApplication {
     /**
      * Close the about box dialog.
      */
-    @Action
+    @ProxyAction
     public void closeAboutBox() {
         if (aboutBox != null) {
             aboutBox.setVisible(false);

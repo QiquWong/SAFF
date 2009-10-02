@@ -6,7 +6,7 @@
 package examples;
 
 import org.jdesktop.application.*;
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -118,7 +118,7 @@ public class SingleFrameExample5 extends SingleFrameApplication {
      * limit the heap's growth.
      */
 
-    @Action(enabledProperty = "nextImageEnabled")
+    @ProxyAction(enabledProperty = "nextImageEnabled")
     public Task nextImage() {
         Task task = null;
         if (imageIndex < (imageLocations.size() - 1)) {
@@ -129,7 +129,7 @@ public class SingleFrameExample5 extends SingleFrameApplication {
         return task;
     }
 
-    @Action(enabledProperty = "previousImageEnabled")
+    @ProxyAction(enabledProperty = "previousImageEnabled")
     public Task previousImage() {
         Task task = null;
         if (imageIndex > 0) {
@@ -140,12 +140,12 @@ public class SingleFrameExample5 extends SingleFrameApplication {
         return task;
     }
 
-    @Action
+    @ProxyAction
     public Task refreshImage() {
         return new ShowImageTask(imageLocations.get(imageIndex));
     }
 
-    @Action
+    @ProxyAction
     public void stopLoading() {
         if ((imageTask != null) && !imageTask.isDone()) {
             imageTask.cancel(true);

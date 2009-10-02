@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.ApplicationAction;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.Launcher;
@@ -49,12 +49,12 @@ public class SelectedPropertyExample extends SingleFrameApplication {
         show(mainPanel);
     }
 
-    @Action
+    @ProxyAction
     public void buttonAction() {
         setSelected(!isSelected());
     }
 
-    @Action(selectedProperty = "selected")
+    @ProxyAction(selectedProperty = "selected")
     public void toggleAction() {
     }
 

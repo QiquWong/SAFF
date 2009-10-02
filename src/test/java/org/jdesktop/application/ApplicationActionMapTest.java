@@ -32,35 +32,35 @@ public class ApplicationActionMapTest extends TestCase {
     }
 
     public static class SimpleActions {
-        @Action
+        @ProxyAction
         public void trivialAction() {
         }  // no properties in Controller.properties
 
-        @Action
+        @ProxyAction
         public void allActionProperties() {
         }  // all possible properties in Controller.properties
 
-        @Action(name = "alternateActionName")
+        @ProxyAction(name = "alternateActionName")
         public void notTheActionName() {
         }
 
         // See testActionMnemonicProperties
-        @Action
+        @ProxyAction
         public void checkActionMnemonics0() {
         }
 
-        @Action
+        @ProxyAction
         public void checkActionMnemonics1() {
         }
 
-        @Action
+        @ProxyAction
         public void checkActionMnemonics5() {
         }
 
         // See testActionPerformed()
         public int actionCounter = 0;
 
-        @Action
+        @ProxyAction
         public void incrementActionCounter() {
             actionCounter += 1;
         }
@@ -86,30 +86,30 @@ public class ApplicationActionMapTest extends TestCase {
             }
         }
 
-        @Action(enabledProperty = "actionEnabled")
+        @ProxyAction(enabledProperty = "actionEnabled")
         public void testActionEnabled() {
         }
 
         // see testActionParametersA()
         public ActionEvent lastActionEvent = null;
 
-        @Action
+        @ProxyAction
         void actionParametersA(ActionEvent e) {
             lastActionEvent = e;
         }
 
-        @Action
+        @ProxyAction
         void actionParametersB(javax.swing.Action a) {
             a.putValue("testKey", "testValue");
         }
 
-        @Action
+        @ProxyAction
         void actionParametersAB(ActionEvent e, javax.swing.Action a) {
             lastActionEvent = e;
             a.putValue("testKey", "testValue");
         }
 
-        @Action
+        @ProxyAction
         void actionParametersZ(
                 ActionEvent actionEvent, javax.swing.Action action, ActionMap actionMap, ResourceMap resourceMap) {
             lastActionEvent = actionEvent;
@@ -122,12 +122,12 @@ public class ApplicationActionMapTest extends TestCase {
         // see testJavaDocExample
         PrintWriter helloWorldWriter = null;
 
-        @Action
+        @ProxyAction
         void Hello() {
             helloWorldWriter.print("Hello ");
         }
 
-        @Action
+        @ProxyAction
         void World() {
             helloWorldWriter.print("World");
         }

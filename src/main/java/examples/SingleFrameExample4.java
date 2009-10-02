@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.Launcher;
 
@@ -41,7 +41,7 @@ public class SingleFrameExample4 extends SingleFrameApplication {
      * can't be saved, so there's no harm in experimenting with
      * the cut/copy/paste/delete editing actions.
      */
-    @Action
+    @ProxyAction
     public void open() {
         JFileChooser chooser = new JFileChooser();
         int option = chooser.showOpenDialog(getMainFrame());
@@ -64,7 +64,7 @@ public class SingleFrameExample4 extends SingleFrameApplication {
      * Replace the contents of the textPane with the value of the
      * "defaultText" resource.
      */
-    @Action
+    @ProxyAction
     public void close() {
         String defaultText = getContext().getResourceMap().getString("defaultText");
         textPane.setText(defaultText);

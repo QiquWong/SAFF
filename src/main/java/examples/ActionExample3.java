@@ -5,7 +5,7 @@
 
 package examples;
 
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Launcher;
 
@@ -38,13 +38,13 @@ public class ActionExample3 extends Application {
     private JTextField textField = null;
     private boolean clearEnabled = false;
 
-    @Action
+    @ProxyAction
     public void setTitle() {
         appFrame.setTitle(textField.getText());
         setClearEnabled(true);
     }
 
-    @Action(enabledProperty = "clearEnabled")
+    @ProxyAction(enabledProperty = "clearEnabled")
     public void clearTitle() {
         appFrame.setTitle("");
         setClearEnabled(false);

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.ApplicationContext;
 import org.jdesktop.application.Launcher;
+import org.jdesktop.application.ProxyAction;
 
 import javax.swing.*;
 
@@ -61,7 +62,7 @@ public class Issue82Test extends TestCase {
 
     private static class ActionProvider {
 
-        @org.jdesktop.application.Action
+        @ProxyAction
         public void pause() {
             // Do nothing.
         }

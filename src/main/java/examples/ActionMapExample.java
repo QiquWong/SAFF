@@ -6,7 +6,7 @@
 package examples;
 
 import org.jdesktop.application.*;
-import org.jdesktop.application.Action;
+import org.jdesktop.application.ProxyAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,7 +99,7 @@ public class ActionMapExample extends SingleFrameApplication {
         private final Scene scene;
         private final Application application;
 
-        @Action
+        @ProxyAction
         public void create() {
             ResourceMap resourceMap = getContext().getResourceMap(getClass(), BaseScenePanel.class);
             Node node = new Node(resourceMap.getIcon("circleIcon"));
@@ -112,7 +112,7 @@ public class ActionMapExample extends SingleFrameApplication {
             getScene().add(node);
         }
 
-        @Action
+        @ProxyAction
         public void remove() {
             getScene().remove(getScene().getSelectedNode());
         }
