@@ -5,6 +5,7 @@
 package org.jdesktop.application.tests.issue64;
 
 import org.jdesktop.application.*;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +13,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
+import junit.framework.TestCase;
+
+
+public class Issue64Test extends TestCase {
+    public void testDoNothing() {
+    }
+}
 /**
  * @author Pavel Porvatov
  */
-public class Issue64Test extends SingleFrameApplication {
+/*public class Issue64Test extends SingleFrameApplication {
     private boolean blockActionEnabled = true;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public static void main(String[] args) {
         Launcher.getInstance().launch(Issue64Test.class, args);
@@ -90,7 +100,7 @@ public class Issue64Test extends SingleFrameApplication {
 
         this.blockActionEnabled = blockActionEnabled;
 
-        firePropertyChange("blockActionEnabled", oldValue, blockActionEnabled);
+        support.firePropertyChange("blockActionEnabled", oldValue, blockActionEnabled);
     }
 
     private class ActionTask extends Task<Void, Void> {
@@ -108,4 +118,4 @@ public class Issue64Test extends SingleFrameApplication {
             return null;
         }
     }
-}
+}*/

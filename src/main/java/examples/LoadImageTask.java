@@ -40,7 +40,7 @@ public class LoadImageTask extends Task<BufferedImage, Void> {
     private ImageReader imageReader = null;
 
     public LoadImageTask(Application app, URL url) {
-        super(app, "LoadImageTask"); // init title/description/messages
+        super(app.getContext().getResourceMap(LoadImageTask.class, Task.class), "LoadImageTask"); // init title/description/messages
         this.url = url;
     }
 

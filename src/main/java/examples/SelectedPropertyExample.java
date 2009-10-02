@@ -12,6 +12,7 @@ import org.jdesktop.application.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeSupport;
 
 /**
  * A simple demonstration of the {@code @Action(selectedProperty)}
@@ -24,6 +25,7 @@ import java.awt.*;
  * @author Hans Muller (Hans.Muller@Sun.COM)
  */
 public class SelectedPropertyExample extends SingleFrameApplication {
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private boolean selected = false;
     JCheckBox checkBox = null;
     JButton button = null;
@@ -65,7 +67,7 @@ public class SelectedPropertyExample extends SingleFrameApplication {
     public void setSelected(boolean selected) {
         boolean oldValue = this.selected;
         this.selected = selected;
-        firePropertyChange("selected", oldValue, this.selected);
+        propertyChangeSupport.firePropertyChange("selected", oldValue, this.selected);
         ApplicationAction cba = (ApplicationAction) checkBox.getAction();
         String msg =
                 String.format("%s.setSelected(%s)\n", getClass().getName(), this.selected) +

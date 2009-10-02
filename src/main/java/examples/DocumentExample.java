@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
  * <dl>
  * <dt><strong>File {@link #getFile file}</strong><dt>
  * <dd>The current text File being edited.</dd>
- * <dt><strong>boolean {@link modified #isModified}</strong><dt>
+ * <dt><strong>boolean {@link #isModified modified}</strong><dt>
  * <dd>True if the current file needs to be saved.</dd>
  * </dl>
  * These properties are updated when the user interacts with the
@@ -91,6 +92,7 @@ public class DocumentExample extends SingleFrameApplication {
     private JDialog aboutBox = null;
     private File file = new File("untitled.txt");
     private boolean modified = false;
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     /**
      * The File currently being edited.  The default value of this
@@ -112,7 +114,7 @@ public class DocumentExample extends SingleFrameApplication {
         this.file = file;
         String appId = appResourceMap.getString("Application.id");
         getMainFrame().setTitle(file.getName() + " - " + appId);
-        firePropertyChange("file", oldValue, this.file);
+        propertyChangeSupport.firePropertyChange("file", oldValue, this.file);
     }
 
     /**
@@ -133,7 +135,7 @@ public class DocumentExample extends SingleFrameApplication {
     private void setModified(boolean modified) {
         boolean oldValue = this.modified;
         this.modified = modified;
-        firePropertyChange("modified", oldValue, this.modified);
+        propertyChangeSupport.firePropertyChange("modified", oldValue, this.modified);
     }
 
     private JFileChooser createFileChooser(String name) {

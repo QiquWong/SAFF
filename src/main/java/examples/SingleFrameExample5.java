@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -44,6 +45,7 @@ import java.util.logging.Logger;
  */
 public class SingleFrameExample5 extends SingleFrameApplication {
     private static Logger logger = Logger.getLogger(SingleFrameExample5.class.getName());
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private JLabel imageLabel;
     private StatusBar statusBar;
 
@@ -170,7 +172,7 @@ public class SingleFrameExample5 extends SingleFrameApplication {
     public void setNextImageEnabled(boolean nextImageEnabled) {
         boolean oldValue = this.nextImageEnabled;
         this.nextImageEnabled = nextImageEnabled;
-        firePropertyChange("nextImageEnabled", oldValue, this.nextImageEnabled);
+        propertyChangeSupport.firePropertyChange("nextImageEnabled", oldValue, this.nextImageEnabled);
     }
 
     public boolean isPreviousImageEnabled() {
@@ -180,7 +182,7 @@ public class SingleFrameExample5 extends SingleFrameApplication {
     public void setPreviousImageEnabled(boolean previousImageEnabled) {
         boolean oldValue = this.previousImageEnabled;
         this.previousImageEnabled = previousImageEnabled;
-        firePropertyChange("previousImageEnabled", oldValue, this.previousImageEnabled);
+        propertyChangeSupport.firePropertyChange("previousImageEnabled", oldValue, this.previousImageEnabled);
     }
 
     /* The ShowImage Task calls one of the following showImage*

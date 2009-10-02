@@ -33,7 +33,7 @@ public class TaskTest extends TestCase {
     
     public static class DoNothingTask extends Task<Void, Void> {
         DoNothingTask() {
-            super(Application.getInstance(SimpleApplication.class), "DoNothingTask");
+            super(Application.getInstance().getContext().getResourceMap(), "DoNothingTask");
         }
 
         protected Void doInBackground() {
@@ -71,7 +71,7 @@ public class TaskTest extends TestCase {
 
     public static class NoResourcesTask extends Task<Void, Void> {
         NoResourcesTask() {
-            super(Application.getInstance(SimpleApplication.class), null, "");
+            super(Application.getInstance());
         }
 
         protected Void doInBackground() {

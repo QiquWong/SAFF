@@ -259,7 +259,7 @@ public class ActionExample4 extends Application {
         private final List<File> buffer;
 
         public ListFilesTask(Application app, File root) {
-            super(app, "ListFilesTask");
+            super(app.getContext().getResourceMap(ListFilesTask.class, Task.class), "ListFilesTask");
             this.root = root;
             bufferSize = 10;
             buffer = new ArrayList<File>(bufferSize);

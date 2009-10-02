@@ -11,8 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
+import javax.swing.*;
 
 /**
  * The {@link javax.swing.Action} class used to implement the
@@ -406,7 +405,6 @@ public class ApplicationAction extends AbstractAction {
     /* Init all of the javax.swing.Action properties for the @Action
      * named actionName.  
      */
-/*
     private void initActionProperties(ResourceMap resourceMap, String baseName) {
         boolean iconOrNameSpecified = false;  // true if Action's icon/name properties set
 
@@ -465,7 +463,6 @@ public class ApplicationAction extends AbstractAction {
             putValue(javax.swing.Action.NAME, actionName);
         }
     }
-*/
 
     private String propertyMethodName(String prefix, String propertyName) {
         return prefix + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);

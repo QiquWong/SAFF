@@ -11,6 +11,7 @@ import org.jdesktop.application.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -37,6 +38,7 @@ public class ActionExample3 extends Application {
     private JFrame appFrame = null;
     private JTextField textField = null;
     private boolean clearEnabled = false;
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     @ProxyAction
     public void setTitle() {
@@ -57,7 +59,7 @@ public class ActionExample3 extends Application {
     public void setClearEnabled(boolean clearEnabled) {
         boolean oldValue = this.clearEnabled;
         this.clearEnabled = clearEnabled;
-        firePropertyChange("clearEnabled", oldValue, this.clearEnabled);
+        propertyChangeSupport.firePropertyChange("clearEnabled", oldValue, this.clearEnabled);
     }
 
     @Override

@@ -191,9 +191,7 @@ public abstract class Application {
      * This method is not run on the Event Dispatching thread, and must therefore adhere to thread safety policies.
      * <p/>
      * Subclasses that want to do any initialization work before {@code startup}
-     * must override it.  The {@code initialize} method
-     * runs on the event dispatching thread.
-     * <p/>
+     * must override it.
      * By default this method set up the resource map
      *
      * @param args the main method's arguments.
