@@ -123,7 +123,6 @@ import java.util.logging.Logger;
  */
 public abstract class Task<T, V> extends SwingWorker<T, V> {
     private static final Logger logger = Logger.getLogger(Task.class.getName());
-    private final Application application;
     private String resourcePrefix;
     private ResourceMap resourceMap;
     private List<TaskListener<T, V>> taskListeners;
@@ -145,7 +144,7 @@ public abstract class Task<T, V> extends SwingWorker<T, V> {
      * out by the Task's {@link #getInputBlocker inputBlocker}.
      *
      * @see Task.InputBlocker
-     * @see Action#block
+     * @see ProxyAction#block
      */
     public enum BlockingScope {
         /**
@@ -200,86 +199,22 @@ public abstract class Task<T, V> extends SwingWorker<T, V> {
     }
 
     /**
-     * <b>Warning:</b> This constructor is deprecated.  It will be removed
-     * in a future release.  This constructor was a way for developers
-     * to initialize a Task's title/description/message properties,
-     * and it's InputBlocker's visual properties, from an alternative
-     * ResourceMap.  This feature is now supported with the
-     * InputBlocker's resourceMap property.
-     * <p/>
-     * Construct a {@code Task}.  If the {@code resourceMap} parameter
-     * is not null, then the {@code title}, {@code description}, and
-     * {@code message} properties are initialized from resources.  The
-     * {@code resourceMap} is also used to lookup localized messages
-     * defined with the {@link #message message} method.  In both
-     * cases, if the value of {@code resourcePrefix} is not null or an
-     * empty string {@code ""}, resource names must have the name of
-     * the {@code resourcePrefix} parameter, followed by a ".", as a
-     * prefix
-     *
-     * @param resourceMap    the ResourceMap for the Task's user properties, can be null
-     * @param resourcePrefix prefix for resource names, can be null
-     * @see #getResourceMap
-     * @see #setTitle
-     * @see #setDescription
-     * @see #setMessage
-     * @see #resourceName
-     * @see ApplicationContext#getResourceMap
-     */
-    @Deprecated
-    public Task(Application application, ResourceMap resourceMap, String resourcePrefix) {
-        this.application = application;
-        initTask(resourceMap, resourcePrefix);
-    }
-
-    /**
-     * <b>Warning:</b> This constructor is deprecated.  It will be removed
-     * in a future release.  This constructor was a way for developers
-     * to initialize a Task's title/description/message properties,
-     * and it's InputBlocker's visual properties, from an alternative
-     * ResourceMap.  This feature is now supported with the
-     * InputBlocker's resourceMap property.
-     * <p/>
-     * Construct a {@code Task} with the specified resource name
-     * prefix, whose ResourceMap is the value of <code>
-     * ApplicationContext.getInstance().getResourceMap(this.getClass(), Task.class)
-     * </code>.  The {@code resourcePrefix} is used to construct
-     * the resource names for the intial values of the
-     * {@code title}, {@code description}, and {@code message} Task properties
-     * and for message {@link java.util.Formatter format} strings.
-     *
-     * @param resourcePrefix prefix for resource names, can be null
-     * @see #getResourceMap
-     * @see #setTitle
-     * @see #setDescription
-     * @see #setMessage
-     * @see #resourceName
-     * @see ApplicationContext#getResourceMap
-     */
-    @Deprecated
-    public Task(Application application, String resourcePrefix) {
-        this.application = application;
-        initTask(defaultResourceMap(application), resourcePrefix);
-    }
-
-    /**
      * Construct a {@code Task} with an empty (<code>""</code>) resource name
      * prefix, whose ResourceMap is the value of
      * <code>ApplicationContext.getInstance().getResourceMap(this.getClass(),
      * Task.class)</code>.
      */
     public Task(Application application) {
-        this.application = application;
         initTask(defaultResourceMap(application), "");
     }
 
-
-    public final Application getApplication() {
-        return application;
-    }
-
-    public final ApplicationContext getContext() {
-        return getApplication().getContext();
+    /**
+     * Construct a {@code Task}.
+     * @param resourceMap the resource map to use
+     * @param prefix the prefix to use
+     */
+    public Task(ResourceMap resourceMap, String prefix) {
+        initTask(resourceMap, prefix);
     }
 
     /**
@@ -1085,7 +1020,7 @@ public abstract class Task<T, V> extends SwingWorker<T, V> {
      * @see Task#getInputBlocker
      * @see Task#setInputBlocker
      * @see TaskService
-     * @see Action
+     * @see ProxyAction
      */
     public static abstract class InputBlocker extends AbstractBean {
         private final Task task;
